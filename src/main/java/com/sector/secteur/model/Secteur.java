@@ -1,28 +1,41 @@
 package com.sector.secteur.model;
 
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "secteur_application_data")
 public class Secteur {
 
+    private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "type")
     private String type;
+
+    @Column(name = "Name")
     private String name;
 
     @Lob
+    @Column(name = "attachmentData")
     private byte[] attachmentData;
 
+    @Column(name = "comment")
     private String comment;
+
+    @Column(name = "date")
     private String date;
 
     public Secteur(){
 
     }
 
-    public Secteur( String name, String type, byte[] attachmentData, String comment, String date) {
+    public Secteur(String name, String type, byte[] attachmentData, String comment, String date) {
 
         this.name = name;
         this.type = type;
@@ -69,5 +82,13 @@ public class Secteur {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

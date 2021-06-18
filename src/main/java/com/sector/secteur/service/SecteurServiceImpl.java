@@ -1,5 +1,6 @@
 package com.sector.secteur.service;
 
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.sector.secteur.model.Secteur;
 import com.sector.secteur.reposytory.FileDBRepository;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 
+@Service
 public class SecteurServiceImpl implements  SecteurService {
 
 
@@ -22,14 +24,19 @@ public class SecteurServiceImpl implements  SecteurService {
     private FileDBRepository fileDBRepository;
 
 
+
+
     @Override
     public Secteur store(MultipartFile file) throws IOException {
 
-       String date = "17/06/2021";
+        String date = "17/06/2021";
+
+
        String comment = "This is a test comment";
 
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
         Secteur secteur = new Secteur(fileName, file.getContentType(), file.getBytes(), comment, date);
 
         return fileDBRepository.save(secteur);
