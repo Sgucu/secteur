@@ -1,19 +1,18 @@
 package com.sector.secteur.service;
 
+
+
+import com.sector.secteur.model.SecteurP;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import com.sector.secteur.model.Secteur;
 import com.sector.secteur.reposytory.FileDBRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.Data;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 @Service
@@ -27,7 +26,7 @@ public class SecteurServiceImpl implements  SecteurService {
 
 
     @Override
-    public Secteur store(MultipartFile file) throws IOException {
+    public SecteurP store(MultipartFile file) throws IOException {
 
         String date = "17/06/2021";
 
@@ -37,19 +36,44 @@ public class SecteurServiceImpl implements  SecteurService {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        Secteur secteur = new Secteur(fileName, file.getContentType(), file.getBytes(), comment, date);
+        SecteurP secteurP = new SecteurP(fileName, file.getContentType(), file.getBytes(), comment, date);
 
-        return fileDBRepository.save(secteur);
+        return fileDBRepository.save(secteurP);
 
     }
 
     @Override
-    public Secteur getFile(Long id) {
+    public SecteurP storeSecond(MultipartFile file) throws IOException {
+
+        String date = "17/06/2021";
+
+
+        String comment = "This is a test comment";
+
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
+        String content = IOUtils.toString(stream,StandardCharsets.US_ASCII);
+
+       // System.out.println(content);
+
+        SecteurP secteurP = new SecteurP(fileName, content,  file.getBytes(), comment, date);
+
+
+
+        return fileDBRepository.save(secteurP);
+
+    }
+
+
+    @Override
+    public SecteurP getFile(Long id) {
         return fileDBRepository.findById(id).get();
     }
 
     @Override
-    public Stream<Secteur> getAllFiles() {
+    public Stream<SecteurP> getAllFiles() {
         return fileDBRepository.findAll().stream();
     }
 }

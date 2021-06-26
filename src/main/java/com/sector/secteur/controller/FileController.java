@@ -1,22 +1,17 @@
 package com.sector.secteur.controller;
 
-import com.sector.secteur.message.ResponseFile;
 import com.sector.secteur.message.ResponseMessage;
-import com.sector.secteur.model.Secteur;
-import com.sector.secteur.reposytory.FileDBRepository;
+import com.sector.secteur.model.SecteurP;
 import com.sector.secteur.service.SecteurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.io.IOException;
-import java.util.List;
 
 
 @RestController
@@ -70,7 +65,7 @@ public class FileController {
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id){
 
-        Secteur fileDB = secteurService.getFile(id);
+        SecteurP fileDB = secteurService.getFile(id);
 
         return  ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileDB.getName() + "\"")

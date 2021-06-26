@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "secteur_application_data")
-public class Secteur {
+@Table(name = "secteur_application_data_new")
+public class SecteurP {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,11 +31,11 @@ public class Secteur {
     @Column(name = "date")
     private String date;
 
-    public Secteur(){
+    public SecteurP(){
 
     }
 
-    public Secteur(String name, String type, byte[] attachmentData, String comment, String date) {
+    public SecteurP(String name, String type, byte[] attachmentData, String comment, String date) {
 
         this.name = name;
         this.type = type;

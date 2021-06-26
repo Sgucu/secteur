@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sector</groupId>
-	<artifactId>secteur</artifactId>
+	<artifactId>secteurP</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>secteur</name>
+	<name>secteurP</name>
 	<description>Spring boot project that imports data from SQL file into specific database. Oracle or Postgres </description>
 	<properties>
 		<java.version>11</java.version>
@@ -28,6 +28,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
 		</dependency>
 
 		<dependency>
@@ -49,6 +56,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.20</version>
 		</dependency>
 	</dependencies>
 
