@@ -1,9 +1,12 @@
 package com.sector.secteur.controller;
 
 import com.sector.secteur.message.ResponseMessage;
-import com.sector.secteur.model.SecteurP;
-import com.sector.secteur.service.SecteurService;
+import com.sector.secteur.model.pos.SecteurP;
+import com.sector.secteur.service.OraSecteurService;
+import com.sector.secteur.service.PosSecteurService;
+import com.sector.secteur.service.PosSecteurServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +22,42 @@ import java.io.IOException;
 public class FileController {
 
     @Autowired
-    private SecteurService secteurService;
+    private PosSecteurService posSecteurService;
 
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file")MultipartFile file){
+    @Autowired
+    private OraSecteurService oraSecteurService;
+
+
+
+
+
+    @PostMapping("/upload/{destination}")
+    public ResponseEntity<ResponseMessage> uploadFile(@PathVariable String destination, @RequestParam("file")MultipartFile file){
 
         String message = "";
         try{
-            secteurService.store(file);
 
-            message = "Uploaded the file successfully : " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            if(destination.equals("Oracle")){
+
+                oraSecteurService.store(file,destination);
+
+                message = "Uploaded the file successfully : " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+            }else if (destination.equals("Postgres")){
+
+                posSecteurService.store(file,destination);
+
+                message = "Uploaded the file successfully : " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+            }else {
+                message = "Could not upload the file: " + file.getOriginalFilename()+ "!";
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            }
+
+
 
 
         }catch (IOException e){
@@ -61,18 +88,18 @@ public class FileController {
 
     }*/
 
-
+/*
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id){
 
-        SecteurP fileDB = secteurService.getFile(id);
+        SecteurP fileDB = posSecteurService.getFile(id);
 
         return  ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileDB.getName() + "\"")
                 .body(fileDB.getAttachmentData());
 
     }
-
+*/
 
 
 }

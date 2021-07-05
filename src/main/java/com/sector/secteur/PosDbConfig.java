@@ -1,7 +1,6 @@
 package com.sector.secteur;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -17,20 +16,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "oraEntityManagerFactory",
-        transactionManagerRef = "oraTransactionManager",
-        basePackages = {"com.sector.secteur.repository.ora"}) // OracleRepository location
-public class OraDbConfig {
+@EnableJpaRepositories(entityManagerFactoryRef = "posEntityManagerFactory", basePackages = {"com.sector.secteur.repository.pos"})
+public class PosDbConfig {
 
-
-    @Bean(name = "oraDataSource")
-    @ConfigurationProperties(prefix = "spring.ds-oracle")
+    @Primary
+    @Bean(name = "posDataSource")
+    @ConfigurationProperties(prefix = "spring.ds-postgresql")
     public DataSource dataSource(){
         return DataSourceBuilder.create().build();
     }
-
 
 //    @Bean(name = "oraDataSource")
 //    @ConfigurationProperties(prefix = "oracle.datasource")
@@ -38,27 +35,32 @@ public class OraDbConfig {
 //        return new DataSourceProperties();
 //    }
 
-    @Bean(name = "oraEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean oraEntityManagerFactory(
+
+    @Primary
+    @Bean(name = "posEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean posEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("oraDataSource") DataSource dataSource){
-
+            @Qualifier("posDataSource") DataSource posDataSource){
         return builder
-                .dataSource(dataSource)
-                .packages("com.sector.secteur.model.ora")      //Oracle Model location
-                .persistenceUnit("SecteurO")        // Oracle Model class
+                .dataSource(posDataSource)
+                .packages("com.sector.secteur.model.pos")
+                .persistenceUnit("SecteurP")
                 .build();
-
     }
 
 
-    @Bean(name = "oraTransactionManager")
-    public PlatformTransactionManager oraTransactionManager(
-            @Qualifier("oraEntityManagerFactory") EntityManagerFactory oraEntityManagerFactory
+
+
+    @Primary
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager posTransactionManager(
+            @Qualifier("posEntityManagerFactory") EntityManagerFactory posEntityManagerFactory
     ){
-        return new JpaTransactionManager(oraEntityManagerFactory);
+        return new JpaTransactionManager(posEntityManagerFactory);
     }
-
 
 
 }
+
+
+
