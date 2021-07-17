@@ -29,11 +29,44 @@ public class FileController {
     private OraSecteurService oraSecteurService;
 
 
-
-
-
     @PostMapping("/upload/{destination}")
     public ResponseEntity<ResponseMessage> uploadFile(@PathVariable String destination, @RequestParam("file")MultipartFile file){
+
+        String message = "";
+        try{
+
+            if(destination.equals("Oracle")){
+
+                oraSecteurService.store(file,destination);
+
+                message = "Uploaded the file successfully to MySQL: " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+            }else if (destination.equals("Postgres")){
+
+                posSecteurService.store(file,destination);
+
+                message = "Uploaded the file successfully to Postgres: " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+            }else {
+                message = "Could not upload the file: " + file.getOriginalFilename()+ "!";
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            }
+
+
+
+
+        }catch (IOException e){
+
+            message = "Could not upload the file: " + file.getOriginalFilename()+ "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
+    }
+
+
+    @PostMapping("/uploadQuery/{destination}")
+    public ResponseEntity<ResponseMessage> uploadQuery(@PathVariable String destination, @RequestParam("file")MultipartFile file){
 
         String message = "";
         try{
@@ -100,6 +133,11 @@ public class FileController {
 
     }
 */
+
+
+
+
+
 
 
 }

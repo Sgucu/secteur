@@ -8,6 +8,6 @@ import java.io.IOException;
 public interface OraSecteurService {
 
     SecteurO store(MultipartFile file, String destination) throws IOException;
-    SecteurO getFile(Long id);
+    String getQuery(MultipartFile file, String destination) throws IOException;
 
 }

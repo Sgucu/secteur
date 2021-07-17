@@ -8,8 +8,11 @@ public class SecteurO {
 
     private static final long serialVersionUID = 1L;
 
+
+    private String executeQuery;
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY) // ID column in database must be AI at least in MySql
     @Column(name = "id")
     private Long id;
 

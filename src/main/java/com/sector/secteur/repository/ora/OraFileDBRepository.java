@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OraFileDBRepository extends JpaRepository<SecteurO,Long> {
+
+    void executeQuery(String query);
 }
