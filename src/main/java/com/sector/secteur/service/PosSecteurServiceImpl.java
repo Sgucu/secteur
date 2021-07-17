@@ -34,7 +34,7 @@ public class PosSecteurServiceImpl implements PosSecteurService {
     @Autowired
     private PosFileDBRepository posFileDBRepository;
 
-    SimpleDateFormat forrmater = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
+    SimpleDateFormat dFormat = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
     Date sysdate = new Date(System.currentTimeMillis());
 
 
@@ -82,7 +82,7 @@ public class PosSecteurServiceImpl implements PosSecteurService {
     public SecteurP store(MultipartFile file,String destination) throws IOException {
 
 
-        String date = sysdate.toString();
+        String date = dFormat.format(sysdate);
 
         String comment = "This is a test comment";
 

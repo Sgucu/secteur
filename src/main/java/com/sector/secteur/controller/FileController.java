@@ -2,11 +2,9 @@ package com.sector.secteur.controller;
 
 import com.sector.secteur.message.ResponseMessage;
 import com.sector.secteur.model.pos.SecteurP;
-import com.sector.secteur.service.OraSecteurService;
+import com.sector.secteur.service.MySqlSecteurService;
 import com.sector.secteur.service.PosSecteurService;
-import com.sector.secteur.service.PosSecteurServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +24,20 @@ public class FileController {
 
 
     @Autowired
-    private OraSecteurService oraSecteurService;
+    private MySqlSecteurService mySqlSecteurService;
 
 
     @PostMapping("/upload/{destination}")
-    public ResponseEntity<ResponseMessage> uploadFile(@PathVariable String destination, @RequestParam("file")MultipartFile file){
+    public ResponseEntity<ResponseMessage> uploadFile(@PathVariable String destination,
+                                                      @RequestParam("file")MultipartFile file,
+                                                      @RequestParam("description") String description){
 
         String message = "";
         try{
 
-            if(destination.equals("Oracle")){
+            if(destination.equals("mysql")){
 
-                oraSecteurService.store(file,destination);
+                mySqlSecteurService.store(file,destination);
 
                 message = "Uploaded the file successfully to MySQL: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -73,7 +73,7 @@ public class FileController {
 
             if(destination.equals("Oracle")){
 
-                oraSecteurService.store(file,destination);
+                mySqlSecteurService.store(file,destination);
 
                 message = "Uploaded the file successfully : " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -121,7 +121,7 @@ public class FileController {
 
     }*/
 
-/*
+
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id){
 
@@ -132,7 +132,7 @@ public class FileController {
                 .body(fileDB.getAttachmentData());
 
     }
-*/
+
 
 
 

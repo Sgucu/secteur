@@ -3,7 +3,7 @@ package com.sector.secteur.model.ora;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "secteur_application_data_new")
+@Table(name = "secteur_data")
 public class SecteurO {
 
     private static final long serialVersionUID = 1L;
